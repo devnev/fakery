@@ -15,7 +15,7 @@ type SingleBasicTypes interface {
 }
 
 //fakery:unstable
-type MultiBasictypes interface {
+type MultiBasicTypes interface {
 	InTwoAnonOutNone(string, int)
 	InNoneOutTwoAnon() (string, int)
 	InTwoAnonOutTwoAnon(float32, int) (string, bool)
