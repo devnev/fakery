@@ -24,3 +24,6 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+    - name: Check License Lines
+      uses: kt3k/license_checker@v1.0.6
