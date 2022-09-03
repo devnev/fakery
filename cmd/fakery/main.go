@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -24,9 +25,9 @@ func main() {
 func run(opts Opts) int {
 	ins := Parse(opts.Src, opts.Name)
 
-	if opts.Dst != "" {
+	if strings.HasSuffix(opts.Dst, ".go") {
 		if len(ins) > 1 {
-			println("dst with multiple interfaces")
+			println("dst file with multiple interfaces")
 			return 1
 		}
 		_, src := Generator{buf: &strings.Builder{}}.Gen(ins[0])
@@ -38,9 +39,8 @@ func run(opts Opts) int {
 
 	for _, in := range ins {
 		dst, src := Generator{buf: &strings.Builder{}}.Gen(in)
-		println(dst, len(src))
 		if src != "" {
-			os.WriteFile(dst, []byte(src), 0o644)
+			os.WriteFile(filepath.Join(opts.Dst, dst), []byte(src), 0o644)
 		}
 	}
 	return 0
