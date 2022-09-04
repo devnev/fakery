@@ -118,6 +118,23 @@ func convertTypes(pkg *types.Package, ts *types.Tuple, imps map[imp]struct{}) []
 				}] = struct{}{}
 				s = append(s, v.Obj().Pkg().Name()+"."+v.Obj().Name())
 			}
+		case *types.Slice:
+			switch v := v.Elem().(type) {
+			case *types.Basic:
+				s = append(s, "..."+v.Name())
+			case *types.Named:
+				if v.Obj().Pkg() == pkg {
+					s = append(s, v.Obj().Name())
+				} else {
+					imps[imp{
+						name: v.Obj().Pkg().Name(),
+						path: v.Obj().Pkg().Path(),
+					}] = struct{}{}
+					s = append(s, "..."+v.Obj().Pkg().Name()+"."+v.Obj().Name())
+				}
+			default:
+				panic(fmt.Sprintf("%#v", v))
+			}
 		default:
 			panic(fmt.Sprintf("%#v", v))
 		}

@@ -32,3 +32,9 @@ type ImportedTypes interface {
 	InIface(sort.Interface)
 	OutIface() sort.Interface
 }
+
+//fakery:unstable
+type VariadicMethods interface {
+	InVariadicOutNone(...int)
+	InOneAndVariadicOutNone(int, ...string)
+}

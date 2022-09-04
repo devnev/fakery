@@ -9,7 +9,8 @@
       "example/example_mock.go",
       "internal/fixtures/mock_imported_types.go",
       "internal/fixtures/mock_multi_basic_types.go",
-      "internal/fixtures/mock_single_basic_types.go"
+      "internal/fixtures/mock_single_basic_types.go",
+      "internal/fixtures/mock_variadic_methods.go"
     ]
   }
 ]

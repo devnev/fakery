@@ -73,6 +73,11 @@ func (g Generator) Gen(in iface) (string, string) {
 	}
 
 	for _, m := range in.methods {
+		for i := range m.paramTypes {
+			if strings.HasPrefix(m.paramTypes[i], "...") {
+				m.paramTypes[i] = "[]" + strings.TrimPrefix(m.paramTypes[i], "...")
+			}
+		}
 		if len(m.paramTypes) > 0 {
 			g.print("func On_", in.name, "_", m.name, "[")
 			g.print("R interface { func() (string, func() (", strings.Join(m.retTypes, ", "), ")) | func(", strings.Join(m.paramTypes, ", "), ") (string, func() (", strings.Join(m.retTypes, ", "), ")) },")
