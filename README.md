@@ -71,3 +71,71 @@ created by testing.(*T).Run
 FAIL	github.com/devnev/fakery/example	0.307s
 FAIL
 ```
+
+### Extended usage & adaptation
+
+The package provides utilities for matching arguments,
+
+```go
+Equal(value)
+Any()
+```
+
+returning values,
+
+```go
+ReturningNothing()
+Returning1(value)
+Returning2(value1, value2)
+//etc.
+ReturningSequence1([]Type{value1, value2})
+```
+
+capturing calls,
+
+```go
+CaptureCount(&counter)
+AppendArgs(&args)
+```
+
+and other controls,
+
+```go
+Once()
+Times(n)
+WaitFor(ch)
+```
+
+Any of the above can be accomplished and extended with the parameters to the
+`On_*` functions:
+
+#### Arguments matchers
+
+Argument matchers have the signature
+
+```go
+func(ArgType) string
+```
+
+A non-empty return value indicates that the argument does not match, with the
+reason as the string value. The mock is locked against further calls to any
+method while the argument matchers are run.
+
+#### Return handlers
+
+Return value handlers have two possible signatures and two stages:
+
+```go
+// with args
+func(...ArgTypes...) (string, func() (...ReturnTypes...))
+// or without args
+func() (string, func() (...ReturnTypes...))
+```
+
+The first stage runs before the match is confirmed (while the mock is locked
+against further calls to any method), and may return a non-empty string to
+indicate that the match failed.
+
+If the first stage returns an empty string, it must also return a function for
+the second stage. This stage runs when the call matching is complete and the
+lock is released. It must return the values for the matched call to return.
