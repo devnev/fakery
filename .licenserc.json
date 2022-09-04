@@ -7,9 +7,11 @@
     ],
     "ignore": [
       "example/example_mock.go",
-      "internal/fixtures/mock_imported_types.go",
+      "internal/fixtures/mock_compound_types.go",
+      "internal/fixtures/mock_interface_types.go",
       "internal/fixtures/mock_multi_basic_types.go",
       "internal/fixtures/mock_single_basic_types.go",
+      "internal/fixtures/mock_struct_types.go",
       "internal/fixtures/mock_variadic_methods.go"
     ]
   }

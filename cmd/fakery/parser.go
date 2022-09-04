@@ -5,7 +5,6 @@
 package main
 
 import (
-	"fmt"
 	"go/ast"
 	"go/types"
 	"path/filepath"
@@ -91,8 +90,8 @@ func process(pkg *types.Package, name string) iface {
 		sig := m.Type().(*types.Signature)
 		iface.methods = append(iface.methods, method{
 			name:       m.Name(),
-			paramTypes: convertTypes(pkg, sig.Params(), importSet),
-			retTypes:   convertTypes(pkg, sig.Results(), importSet),
+			paramTypes: convertTypes(pkg, sig.Params(), sig.Variadic(), importSet),
+			retTypes:   convertTypes(pkg, sig.Results(), false, importSet),
 		})
 	}
 	for imp := range importSet {
@@ -101,45 +100,30 @@ func process(pkg *types.Package, name string) iface {
 	return iface
 }
 
-func convertTypes(pkg *types.Package, ts *types.Tuple, imps map[imp]struct{}) []string {
+func convertTypes(pkg *types.Package, ts *types.Tuple, variadic bool, imps map[imp]struct{}) []string {
 	var s []string
 	for i, rc := 0, ts.Len(); i < rc; i++ {
 		result := ts.At(i)
-		switch v := result.Type().(type) {
-		case *types.Basic:
-			s = append(s, v.Name())
-		case *types.Named:
-			if v.Obj().Pkg() == pkg {
-				s = append(s, v.Obj().Name())
-			} else {
-				imps[imp{
-					name: v.Obj().Pkg().Name(),
-					path: v.Obj().Pkg().Path(),
-				}] = struct{}{}
-				s = append(s, v.Obj().Pkg().Name()+"."+v.Obj().Name())
-			}
-		case *types.Slice:
-			switch v := v.Elem().(type) {
-			case *types.Basic:
-				s = append(s, "..."+v.Name())
-			case *types.Named:
-				if v.Obj().Pkg() == pkg {
-					s = append(s, v.Obj().Name())
-				} else {
-					imps[imp{
-						name: v.Obj().Pkg().Name(),
-						path: v.Obj().Pkg().Path(),
-					}] = struct{}{}
-					s = append(s, "..."+v.Obj().Pkg().Name()+"."+v.Obj().Name())
-				}
-			default:
-				panic(fmt.Sprintf("%#v", v))
-			}
-		default:
-			panic(fmt.Sprintf("%#v", v))
+		if variadic && i == rc-1 {
+			s = append(s, "..."+convertType(pkg, result.Type().(*types.Slice).Elem(), imps))
+		} else {
+			s = append(s, convertType(pkg, result.Type(), imps))
 		}
 	}
 	return s
+}
+
+func convertType(pkg *types.Package, t types.Type, imps map[imp]struct{}) string {
+	return types.TypeString(t, func(p *types.Package) string {
+		if p == pkg {
+			return ""
+		}
+		imps[imp{
+			name: p.Name(),
+			path: p.Path(),
+		}] = struct{}{}
+		return p.Name()
+	})
 }
 
 type iface struct {

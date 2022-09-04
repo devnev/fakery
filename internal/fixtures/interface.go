@@ -4,7 +4,10 @@
 
 package fixtures
 
-import "sort"
+import (
+	"net/http"
+	"sort"
+)
 
 //go:generate go run github.com/devnev/fakery/cmd/fakery -src interface.go
 
@@ -28,13 +31,31 @@ type MultiBasicTypes interface {
 }
 
 //fakery:unstable
-type ImportedTypes interface {
-	InIface(sort.Interface)
-	OutIface() sort.Interface
+type InterfaceTypes interface {
+	InEmptyInterface(interface{})
+	InAny(any)
+	InImported(sort.Interface)
+	OutImported() sort.Interface
 }
 
 //fakery:unstable
 type VariadicMethods interface {
 	InVariadicOutNone(...int)
 	InOneAndVariadicOutNone(int, ...string)
+}
+
+//fakery:unstable
+type CompoundTypes interface {
+	InPointerOutNone(*int)
+	InNoneOutPointer() *string
+	InSliceOutNone([]string)
+	InNoneOutSlice() []float32
+	InMapOutNone(map[string]int)
+	InNoneOutMap() map[string]int
+}
+
+//fakery:unstable
+type StructTypes interface {
+	InAnonEmptyStruct(struct{})
+	InImportedStruct(http.Server)
 }
