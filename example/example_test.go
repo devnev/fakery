@@ -17,7 +17,7 @@ import (
 
 func TestFakeryMatch(t *testing.T) {
 	m := &Mock_ToBeMocked{}
-	On_ToBeMocked_Get(m, fakery.Equal("hello"), fakery.Returning1(Returned(returned{})))
+	On_ToBeMocked_Get(m, fakery.Equal("hello"), fakery.Returning1(Returned(returned("hello"))))
 	var i ToBeMocked = m
 	i.Get("hello").Hello()
 }
@@ -31,8 +31,8 @@ func TestFakeryMatchNilInterface(t *testing.T) {
 
 func TestFakeryNoMatch(t *testing.T) {
 	m := &Mock_ToBeMocked{}
-	On_ToBeMocked_Get(m, fakery.Equal("hello"), fakery.Returning1(Returned(returned{})))
-	On_ToBeMocked_Get(m, fakery.Equal("goodbye"), fakery.Returning1(Returned(returned{})), fakery.Times(0))
+	On_ToBeMocked_Get(m, fakery.Equal("hello"), fakery.Returning1(Returned(returned("hello"))))
+	On_ToBeMocked_Get(m, fakery.Equal("goodbye"), fakery.Returning1(Returned(returned("hello"))), fakery.Times(0))
 	var i ToBeMocked = m
 
 	out := testutils.RecordStderr(t)
@@ -66,7 +66,7 @@ func TestFakeryNoMatch(t *testing.T) {
 
 func TestFakeryMatchOnce(t *testing.T) {
 	m := &Mock_ToBeMocked{}
-	On_ToBeMocked_Get(m, fakery.Equal("hello"), fakery.Returning1(Returned(returned{})), fakery.Once())
+	On_ToBeMocked_Get(m, fakery.Equal("hello"), fakery.Returning1(Returned(returned("hello"))), fakery.Once())
 	var i ToBeMocked = m
 	i.Get("hello").Hello()
 
@@ -112,8 +112,36 @@ func TestFakeryWithParametrisedValueReturner(t *testing.T) {
 	i.Get("hello")
 }
 
-type returned struct{}
+func TestFakeryWithReturnSequence(t *testing.T) {
+	m := &Mock_ToBeMocked{}
+	On_ToBeMocked_Get(m, fakery.Any[string](), fakery.ReturningSequence1([]Returned{
+		returned("hello"),
+		returned("goodbye"),
+	}))
+	var i ToBeMocked = m
+	r := i.Get("something")
+	if e := returned("hello"); r != e {
+		t.Errorf("expected %q, got %q", e, r)
+	}
+	r = i.Get("something")
+	if e := returned("goodbye"); r != e {
+		t.Errorf("expected %q, got %q", e, r)
+	}
+	out := testutils.RecordStderr(t)
+	pv := testutils.CapturePanic(func() {
+		i.Get("something")
+	})
+	<-out.Stop()
+	if e := "no match for call to Get"; pv != e {
+		t.Errorf("expected panic %q, got %#v", e, pv)
+	}
+	if o, e := out.Out(), "Matcher 1 ("+testutils.FileLine(-21)+")\n\tReturn sequence exhausted\n"; o != e {
+		t.Errorf("expected output %q, got %#v", e, o)
+	}
+}
+
+type returned string
 
 func (r returned) Hello() {
-	println("hello")
+	println(string(r))
 }
