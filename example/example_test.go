@@ -24,7 +24,7 @@ func TestFakeryMatch(t *testing.T) {
 
 func TestFakeryMatchNilInterface(t *testing.T) {
 	m := &Mock_ToBeMocked{}
-	On_ToBeMocked_Init(m, fakery.Equal[Required](nil), fakery.Any[string](), fakery.ReturningNothing)
+	On_ToBeMocked_Init(m, fakery.Equal[Required](nil), fakery.Any[string](), fakery.ReturningNothing())
 	var i ToBeMocked = m
 	i.Init(nil, "hello")
 }
@@ -94,15 +94,19 @@ func TestFakeryMatchOnce(t *testing.T) {
 
 func TestFakeryWithParametrisedNothingReturner(t *testing.T) {
 	m := &Mock_ToBeMocked{}
-	On_ToBeMocked_Init(m, fakery.Any[Required](), fakery.Any[string](), func(r Required, s string) {})
+	On_ToBeMocked_Init(m, fakery.Any[Required](), fakery.Any[string](), func(r Required, s string) (string, func()) {
+		return "", func() {}
+	})
 	var i ToBeMocked = m
 	i.Init(nil, "hello")
 }
 
 func TestFakeryWithParametrisedValueReturner(t *testing.T) {
 	m := &Mock_ToBeMocked{}
-	On_ToBeMocked_Get(m, fakery.Any[string](), func(string) Returned {
-		return nil
+	On_ToBeMocked_Get(m, fakery.Any[string](), func(string) (string, func() Returned) {
+		return "", func() Returned {
+			return nil
+		}
 	})
 	var i ToBeMocked = m
 	i.Get("hello")

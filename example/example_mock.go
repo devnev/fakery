@@ -29,7 +29,9 @@ func (m *Mock_ToBeMocked) Init(
 }
 
 func On_ToBeMocked_Add[
-	R interface{ func() | func(Input) },
+	R interface {
+		func() (string, func()) | func(Input) (string, func())
+	},
 ](
 	m *Mock_ToBeMocked,
 	a0 func(Input) string,
@@ -41,7 +43,7 @@ func On_ToBeMocked_Add[
 
 func On_ToBeMocked_Get[
 	R interface {
-		func() Returned | func(string) Returned
+		func() (string, func() Returned) | func(string) (string, func() Returned)
 	},
 ](
 	m *Mock_ToBeMocked,
@@ -54,7 +56,7 @@ func On_ToBeMocked_Get[
 
 func On_ToBeMocked_Init[
 	R interface {
-		func() | func(Required, string)
+		func() (string, func()) | func(Required, string) (string, func())
 	},
 ](
 	m *Mock_ToBeMocked,

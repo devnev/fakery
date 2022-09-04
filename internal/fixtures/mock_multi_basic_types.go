@@ -45,18 +45,18 @@ func (m *Mock_MultiBasicTypes) InTwoNamedOutNone(
 	fakery_gendeps.Called(&m.matchers, "InTwoNamedOutNone", []any{&a0, &a1})
 }
 
-func On_MultiBasicTypes_InNoneOutTwoAnon[
-	R interface{ func() (string, int) },
-](
+func On_MultiBasicTypes_InNoneOutTwoAnon(
 	m *Mock_MultiBasicTypes,
-	r R,
+	r func() (string, func() (string, int)),
 	o ...fakery.Option,
 ) {
 	fakery_gendeps.Add(&m.matchers, "InNoneOutTwoAnon", []any{}, r, o)
 }
 
 func On_MultiBasicTypes_InTwoAnonOutNone[
-	R interface{ func() | func(string, int) },
+	R interface {
+		func() (string, func()) | func(string, int) (string, func())
+	},
 ](
 	m *Mock_MultiBasicTypes,
 	a0 func(string) string,
@@ -69,7 +69,7 @@ func On_MultiBasicTypes_InTwoAnonOutNone[
 
 func On_MultiBasicTypes_InTwoAnonOutTwoAnon[
 	R interface {
-		func() (string, bool) | func(float32, int) (string, bool)
+		func() (string, func() (string, bool)) | func(float32, int) (string, func() (string, bool))
 	},
 ](
 	m *Mock_MultiBasicTypes,
@@ -83,7 +83,7 @@ func On_MultiBasicTypes_InTwoAnonOutTwoAnon[
 
 func On_MultiBasicTypes_InTwoCombinedOutNone[
 	R interface {
-		func() | func(float32, float32)
+		func() (string, func()) | func(float32, float32) (string, func())
 	},
 ](
 	m *Mock_MultiBasicTypes,
@@ -96,7 +96,9 @@ func On_MultiBasicTypes_InTwoCombinedOutNone[
 }
 
 func On_MultiBasicTypes_InTwoNamedOutNone[
-	R interface{ func() | func(int, string) },
+	R interface {
+		func() (string, func()) | func(int, string) (string, func())
+	},
 ](
 	m *Mock_MultiBasicTypes,
 	a0 func(int) string,

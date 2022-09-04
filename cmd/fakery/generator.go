@@ -73,18 +73,22 @@ func (g Generator) Gen(in iface) (string, string) {
 	}
 
 	for _, m := range in.methods {
-		g.print("func On_", in.name, "_", m.name, "[")
 		if len(m.paramTypes) > 0 {
-			g.print("R interface { func() (", strings.Join(m.retTypes, ", "), ") | func(", strings.Join(m.paramTypes, ", "), ") (", strings.Join(m.retTypes, ", "), ") },")
+			g.print("func On_", in.name, "_", m.name, "[")
+			g.print("R interface { func() (string, func() (", strings.Join(m.retTypes, ", "), ")) | func(", strings.Join(m.paramTypes, ", "), ") (string, func() (", strings.Join(m.retTypes, ", "), ")) },")
+			g.print("](")
 		} else {
-			g.print("R interface { func() (", strings.Join(m.retTypes, ", "), ") },")
+			g.print("func On_", in.name, "_", m.name, "(")
 		}
-		g.print("](")
 		g.print("m *Mock_", in.name, ",")
 		for i, pt := range m.paramTypes {
 			g.print("a", strconv.Itoa(i), " func(", pt, ") string,")
 		}
-		g.print("r R,")
+		if len(m.paramTypes) > 0 {
+			g.print("r R,")
+		} else {
+			g.print("r func() (string, func() (", strings.Join(m.retTypes, ", "), ")),")
+		}
 		g.print("o ...fakery.Option,")
 		g.print(") {")
 		g.print(

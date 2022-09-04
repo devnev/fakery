@@ -46,7 +46,9 @@ func (m *Mock_SingleBasicTypes) InNoneOutNone() {
 }
 
 func On_SingleBasicTypes_InAnonOutNone[
-	R interface{ func() | func(int) },
+	R interface {
+		func() (string, func()) | func(int) (string, func())
+	},
 ](
 	m *Mock_SingleBasicTypes,
 	a0 func(int) string,
@@ -57,7 +59,9 @@ func On_SingleBasicTypes_InAnonOutNone[
 }
 
 func On_SingleBasicTypes_InNamedOutAnon[
-	R interface{ func() int | func(string) int },
+	R interface {
+		func() (string, func() int) | func(string) (string, func() int)
+	},
 ](
 	m *Mock_SingleBasicTypes,
 	a0 func(string) string,
@@ -69,7 +73,7 @@ func On_SingleBasicTypes_InNamedOutAnon[
 
 func On_SingleBasicTypes_InNamedOutNamed[
 	R interface {
-		func() string | func(int) string
+		func() (string, func() string) | func(int) (string, func() string)
 	},
 ](
 	m *Mock_SingleBasicTypes,
@@ -81,7 +85,9 @@ func On_SingleBasicTypes_InNamedOutNamed[
 }
 
 func On_SingleBasicTypes_InNamedOutNone[
-	R interface{ func() | func(int) },
+	R interface {
+		func() (string, func()) | func(int) (string, func())
+	},
 ](
 	m *Mock_SingleBasicTypes,
 	a0 func(int) string,
@@ -91,21 +97,17 @@ func On_SingleBasicTypes_InNamedOutNone[
 	fakery_gendeps.Add(&m.matchers, "InNamedOutNone", []any{a0}, r, o)
 }
 
-func On_SingleBasicTypes_InNoneOutAnonBasic[
-	R interface{ func() int },
-](
+func On_SingleBasicTypes_InNoneOutAnonBasic(
 	m *Mock_SingleBasicTypes,
-	r R,
+	r func() (string, func() int),
 	o ...fakery.Option,
 ) {
 	fakery_gendeps.Add(&m.matchers, "InNoneOutAnonBasic", []any{}, r, o)
 }
 
-func On_SingleBasicTypes_InNoneOutNone[
-	R interface{ func() },
-](
+func On_SingleBasicTypes_InNoneOutNone(
 	m *Mock_SingleBasicTypes,
-	r R,
+	r func() (string, func()),
 	o ...fakery.Option,
 ) {
 	fakery_gendeps.Add(&m.matchers, "InNoneOutNone", []any{}, r, o)

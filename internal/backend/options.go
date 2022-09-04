@@ -59,13 +59,11 @@ func AppendArgs(to *[][]any) Option {
 type Option interface {
 	called([]any) string
 	matched([]any) string
-	returned([]any, []any)
 }
 
 type option struct {
-	calledFn   func([]any) string
-	matchedFn  func([]any) string
-	returnedFn func([]any, []any)
+	calledFn  func([]any) string
+	matchedFn func([]any) string
 }
 
 func (o option) called(a []any) string {
@@ -80,10 +78,4 @@ func (o option) matched(a []any) string {
 		return o.matchedFn(a)
 	}
 	return ""
-}
-
-func (o option) returned(a []any, r []any) {
-	if o.returnedFn != nil {
-		o.returnedFn(a, r)
-	}
 }

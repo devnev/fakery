@@ -21,7 +21,9 @@ func (m *Mock_ImportedTypes) OutIface() sort.Interface {
 }
 
 func On_ImportedTypes_InIface[
-	R interface{ func() | func(sort.Interface) },
+	R interface {
+		func() (string, func()) | func(sort.Interface) (string, func())
+	},
 ](
 	m *Mock_ImportedTypes,
 	a0 func(sort.Interface) string,
@@ -31,11 +33,9 @@ func On_ImportedTypes_InIface[
 	fakery_gendeps.Add(&m.matchers, "InIface", []any{a0}, r, o)
 }
 
-func On_ImportedTypes_OutIface[
-	R interface{ func() sort.Interface },
-](
+func On_ImportedTypes_OutIface(
 	m *Mock_ImportedTypes,
-	r R,
+	r func() (string, func() sort.Interface),
 	o ...fakery.Option,
 ) {
 	fakery_gendeps.Add(&m.matchers, "OutIface", []any{}, r, o)
