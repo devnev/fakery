@@ -42,7 +42,7 @@ func Times(n uint) Option {
 	}
 }
 
-func CaptureCount[T constraints.Integer](counter *T) Option {
+func Increment[T constraints.Integer](counter *T) Option {
 	return option{matchedFn: func([]any) string {
 		*counter++
 		return ""

@@ -114,10 +114,10 @@ func TestFakeryWithParametrisedValueReturner(t *testing.T) {
 
 func TestFakeryWithReturnSequence(t *testing.T) {
 	m := &Mock_ToBeMocked{}
-	On_ToBeMocked_Get(m, fakery.Any[string](), fakery.ReturningSequence1([]Returned{
+	On_ToBeMocked_Get(m, fakery.Any[string](), fakery.Returning1v[Returned](
 		returned("hello"),
 		returned("goodbye"),
-	}))
+	))
 	var i ToBeMocked = m
 	r := i.Get("something")
 	if e := returned("hello"); r != e {

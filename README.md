@@ -24,12 +24,21 @@ $ fakery -src .
 ### Using generated mocks
 
 ```go
-func TestThing(t *testing.T) {
+func TestDoThing(t *testing.T) {
     mockIface := &Mock_IFace{}
     On_Iface_DoThing(mockIface, fakery.Equal("hello"), fakery.ReturnNothing, fakery.Once())
     // A *MockIface can be used anywhere an Iface is expected
-    var realIface Iface  = mockIface
+    var realIface Iface = mockIface
     realIface.DoThing("hello")
+}
+
+func TestDoThingCallArgs(t *testing.T) {
+    mockIface := &Mock_IFace{}
+	var doThingArgs [][]any
+    On_Iface_DoThing(mockIface, fakery.Any[string](), fakery.ReturnNothing, fakery.AppendArgs(&doThingArgs))
+	runTest(mockIface)
+	// Use your preferred way of asserting, e.g. hand-rolled or testify assertions
+	assert.Equal(t, [][]any{{"hello"}, {"world"}}, doThingArgs)
 }
 ```
 
@@ -88,13 +97,13 @@ ReturningNothing()
 Returning1(value)
 Returning2(value1, value2)
 //etc.
-ReturningSequence1([]Type{value1, value2})
+Returning1v(value1, value2)
 ```
 
-capturing calls,
+recording calls,
 
 ```go
-CaptureCount(&counter)
+Increment(&counter)
 AppendArgs(&args)
 ```
 
