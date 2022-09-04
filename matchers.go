@@ -8,8 +8,10 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func Equal[T any](v T, o ...cmp.Option) func(T) string {
-	return func(a T) string { return cmp.Diff(v, a, o...) }
+func Equal[T any](v T) func(T) string {
+	return func(a T) string {
+		return cmp.Diff(v, a)
+	}
 }
 
 func Any[T any]() func(T) string {
