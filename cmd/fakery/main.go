@@ -43,9 +43,10 @@ func run(opts Opts) int {
 
 	for _, in := range ins {
 		dst, src := Generator{buf: &strings.Builder{}}.Gen(in)
-		if src != "" {
-			os.WriteFile(filepath.Join(opts.Dst, dst), []byte(src), 0o644)
+		if src == "" {
+			return 1
 		}
+		os.WriteFile(filepath.Join(opts.Dst, dst), []byte(src), 0o644)
 	}
 	return 0
 }
