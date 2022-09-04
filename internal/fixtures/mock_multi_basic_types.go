@@ -8,7 +8,7 @@ type Mock_MultiBasicTypes struct {
 }
 
 func (m *Mock_MultiBasicTypes) InNoneOutTwoAnon() (string, int) {
-	ret := fakery_gendeps.Called(m.matchers, "InNoneOutTwoAnon", []any{})
+	ret := fakery_gendeps.Called(&m.matchers, "InNoneOutTwoAnon", []any{})
 	r0, _ := ret[0].(string)
 	r1, _ := ret[1].(int)
 	return r0, r1
@@ -18,14 +18,14 @@ func (m *Mock_MultiBasicTypes) InTwoAnonOutNone(
 	a0 string,
 	a1 int,
 ) {
-	fakery_gendeps.Called(m.matchers, "InTwoAnonOutNone", []any{&a0, &a1})
+	fakery_gendeps.Called(&m.matchers, "InTwoAnonOutNone", []any{&a0, &a1})
 }
 
 func (m *Mock_MultiBasicTypes) InTwoAnonOutTwoAnon(
 	a0 float32,
 	a1 int,
 ) (string, bool) {
-	ret := fakery_gendeps.Called(m.matchers, "InTwoAnonOutTwoAnon", []any{&a0, &a1})
+	ret := fakery_gendeps.Called(&m.matchers, "InTwoAnonOutTwoAnon", []any{&a0, &a1})
 	r0, _ := ret[0].(string)
 	r1, _ := ret[1].(bool)
 	return r0, r1
@@ -35,14 +35,14 @@ func (m *Mock_MultiBasicTypes) InTwoCombinedOutNone(
 	a0 float32,
 	a1 float32,
 ) {
-	fakery_gendeps.Called(m.matchers, "InTwoCombinedOutNone", []any{&a0, &a1})
+	fakery_gendeps.Called(&m.matchers, "InTwoCombinedOutNone", []any{&a0, &a1})
 }
 
 func (m *Mock_MultiBasicTypes) InTwoNamedOutNone(
 	a0 int,
 	a1 string,
 ) {
-	fakery_gendeps.Called(m.matchers, "InTwoNamedOutNone", []any{&a0, &a1})
+	fakery_gendeps.Called(&m.matchers, "InTwoNamedOutNone", []any{&a0, &a1})
 }
 
 func On_MultiBasicTypes_InNoneOutTwoAnon[

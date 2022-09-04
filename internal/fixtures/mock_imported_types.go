@@ -11,11 +11,11 @@ type Mock_ImportedTypes struct {
 func (m *Mock_ImportedTypes) InIface(
 	a0 sort.Interface,
 ) {
-	fakery_gendeps.Called(m.matchers, "InIface", []any{&a0})
+	fakery_gendeps.Called(&m.matchers, "InIface", []any{&a0})
 }
 
 func (m *Mock_ImportedTypes) OutIface() sort.Interface {
-	ret := fakery_gendeps.Called(m.matchers, "OutIface", []any{})
+	ret := fakery_gendeps.Called(&m.matchers, "OutIface", []any{})
 	r0, _ := ret[0].(sort.Interface)
 	return r0
 }

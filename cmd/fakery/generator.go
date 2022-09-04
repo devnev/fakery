@@ -49,7 +49,7 @@ func (g Generator) Gen(in iface) (string, string) {
 		if len(m.retTypes) > 0 {
 			g.print(") (", strings.Join(m.retTypes, ", "), ") {")
 			g.print(
-				"ret := fakery_gendeps.Called(m.matchers, ",
+				"ret := fakery_gendeps.Called(&m.matchers, ",
 				strconv.Quote(m.name),
 				", []any{",
 				strings.Join(numbered("&a", len(m.paramTypes)), ", "),
@@ -62,7 +62,7 @@ func (g Generator) Gen(in iface) (string, string) {
 		} else {
 			g.print(") {")
 			g.print(
-				"fakery_gendeps.Called(m.matchers, ",
+				"fakery_gendeps.Called(&m.matchers, ",
 				strconv.Quote(m.name),
 				", []any{",
 				strings.Join(numbered("&a", len(m.paramTypes)), ", "),

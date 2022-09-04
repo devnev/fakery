@@ -44,13 +44,13 @@ func Add(set *MatchSet, method string, args []any, ret any, opts []Option) {
 	})
 }
 
-func Called(ms MatchSet, m string, as []any) []any {
+func Called(ms *MatchSet, m string, as []any) []any {
 	var arv []reflect.Value
 	for _, a := range as {
 		arv = append(arv, reflect.ValueOf(a).Elem())
 	}
 	var dss [][]string
-	for _, m := range ms[m] {
+	for _, m := range (*ms)[m] {
 		if ds, rs := check(m, as, arv); len(ds) == 0 {
 			return rs
 		} else {
@@ -58,7 +58,7 @@ func Called(ms MatchSet, m string, as []any) []any {
 		}
 	}
 	for i, ds := range dss {
-		fmt.Fprintf(os.Stderr, "Matcher %d (%s:%d)\n", i+1, ms[m][i].file, ms[m][i].line)
+		fmt.Fprintf(os.Stderr, "Matcher %d (%s:%d)\n", i+1, (*ms)[m][i].file, (*ms)[m][i].line)
 		for _, s := range ds {
 			if s != "" {
 				fmt.Fprint(os.Stderr, "\t"+strings.ReplaceAll(s, "\n", "\n\t\t")+"\n")

@@ -10,13 +10,13 @@ type Mock_SingleBasicTypes struct {
 func (m *Mock_SingleBasicTypes) InAnonOutNone(
 	a0 int,
 ) {
-	fakery_gendeps.Called(m.matchers, "InAnonOutNone", []any{&a0})
+	fakery_gendeps.Called(&m.matchers, "InAnonOutNone", []any{&a0})
 }
 
 func (m *Mock_SingleBasicTypes) InNamedOutAnon(
 	a0 string,
 ) int {
-	ret := fakery_gendeps.Called(m.matchers, "InNamedOutAnon", []any{&a0})
+	ret := fakery_gendeps.Called(&m.matchers, "InNamedOutAnon", []any{&a0})
 	r0, _ := ret[0].(int)
 	return r0
 }
@@ -24,7 +24,7 @@ func (m *Mock_SingleBasicTypes) InNamedOutAnon(
 func (m *Mock_SingleBasicTypes) InNamedOutNamed(
 	a0 int,
 ) string {
-	ret := fakery_gendeps.Called(m.matchers, "InNamedOutNamed", []any{&a0})
+	ret := fakery_gendeps.Called(&m.matchers, "InNamedOutNamed", []any{&a0})
 	r0, _ := ret[0].(string)
 	return r0
 }
@@ -32,17 +32,17 @@ func (m *Mock_SingleBasicTypes) InNamedOutNamed(
 func (m *Mock_SingleBasicTypes) InNamedOutNone(
 	a0 int,
 ) {
-	fakery_gendeps.Called(m.matchers, "InNamedOutNone", []any{&a0})
+	fakery_gendeps.Called(&m.matchers, "InNamedOutNone", []any{&a0})
 }
 
 func (m *Mock_SingleBasicTypes) InNoneOutAnonBasic() int {
-	ret := fakery_gendeps.Called(m.matchers, "InNoneOutAnonBasic", []any{})
+	ret := fakery_gendeps.Called(&m.matchers, "InNoneOutAnonBasic", []any{})
 	r0, _ := ret[0].(int)
 	return r0
 }
 
 func (m *Mock_SingleBasicTypes) InNoneOutNone() {
-	fakery_gendeps.Called(m.matchers, "InNoneOutNone", []any{})
+	fakery_gendeps.Called(&m.matchers, "InNoneOutNone", []any{})
 }
 
 func On_SingleBasicTypes_InAnonOutNone[

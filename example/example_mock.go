@@ -10,13 +10,13 @@ type Mock_ToBeMocked struct {
 func (m *Mock_ToBeMocked) Add(
 	a0 Input,
 ) {
-	fakery_gendeps.Called(m.matchers, "Add", []any{&a0})
+	fakery_gendeps.Called(&m.matchers, "Add", []any{&a0})
 }
 
 func (m *Mock_ToBeMocked) Get(
 	a0 string,
 ) Returned {
-	ret := fakery_gendeps.Called(m.matchers, "Get", []any{&a0})
+	ret := fakery_gendeps.Called(&m.matchers, "Get", []any{&a0})
 	r0, _ := ret[0].(Returned)
 	return r0
 }
@@ -25,7 +25,7 @@ func (m *Mock_ToBeMocked) Init(
 	a0 Required,
 	a1 string,
 ) {
-	fakery_gendeps.Called(m.matchers, "Init", []any{&a0, &a1})
+	fakery_gendeps.Called(&m.matchers, "Init", []any{&a0, &a1})
 }
 
 func On_ToBeMocked_Add[
