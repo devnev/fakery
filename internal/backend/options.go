@@ -56,14 +56,22 @@ func AppendArgs(to *[][]any) Option {
 	}}
 }
 
+func WaitFor[T any](signal <-chan T) Option {
+	return option{unlockedFn: func() {
+		<-signal
+	}}
+}
+
 type Option interface {
 	called([]any) string
 	matched([]any) string
+	unlocked()
 }
 
 type option struct {
-	calledFn  func([]any) string
-	matchedFn func([]any) string
+	calledFn   func([]any) string
+	matchedFn  func([]any) string
+	unlockedFn func()
 }
 
 func (o option) called(a []any) string {
@@ -78,4 +86,10 @@ func (o option) matched(a []any) string {
 		return o.matchedFn(a)
 	}
 	return ""
+}
+
+func (o option) unlocked() {
+	if o.unlockedFn != nil {
+		o.unlockedFn()
+	}
 }

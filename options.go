@@ -26,3 +26,7 @@ func CaptureCount[T constraints.Integer](counter *T) Option {
 func AppendArgs(to *[][]any) Option {
 	return backend.AppendArgs(to)
 }
+
+func WaitFor[T any](signal <-chan T) Option {
+	return backend.WaitFor(signal)
+}

@@ -66,9 +66,12 @@ func Called(ms *MatchSet, m string, as []any) []any {
 
 	var dss [][]string
 	for _, m := range ms.methods[m] {
-		if ds, retFn := check(m, as, arv); len(ds) == 0 {
+		if ds, retFn, opts := check(m, as, arv); len(ds) == 0 {
 			locked = false
 			ms.mu.Unlock()
+			for _, o := range opts {
+				o.unlocked()
+			}
 			var rs []any
 			for _, rv := range retFn.Call(nil) {
 				rs = append(rs, rv.Interface())
@@ -90,14 +93,14 @@ func Called(ms *MatchSet, m string, as []any) []any {
 	panic("no match for call to " + m)
 }
 
-func check(m Matcher, ain []any, arv []reflect.Value) (ds []string, ret reflect.Value) {
+func check(m Matcher, ain []any, arv []reflect.Value) (ds []string, ret reflect.Value, opts []Option) {
 	for _, o := range m.opts {
 		if d := o.called(ain); d != "" {
 			ds = append(ds, d)
 		}
 	}
 	if len(ds) > 0 {
-		return ds, reflect.Value{}
+		return ds, reflect.Value{}, m.opts
 	}
 
 	var ne bool
@@ -110,7 +113,7 @@ func check(m Matcher, ain []any, arv []reflect.Value) (ds []string, ret reflect.
 		ne = ne || d != ""
 	}
 	if ne {
-		return ds, reflect.Value{}
+		return ds, reflect.Value{}, m.opts
 	}
 
 	var rv []reflect.Value
@@ -120,7 +123,7 @@ func check(m Matcher, ain []any, arv []reflect.Value) (ds []string, ret reflect.
 		rv = m.retFn.Call(arv)
 	}
 	if d := rv[0].Interface().(string); len(d) > 0 {
-		return []string{d}, reflect.Value{}
+		return []string{d}, reflect.Value{}, m.opts
 	}
 
 	ds = nil
@@ -130,8 +133,8 @@ func check(m Matcher, ain []any, arv []reflect.Value) (ds []string, ret reflect.
 		}
 	}
 	if len(ds) > 0 {
-		return ds, reflect.Value{}
+		return ds, reflect.Value{}, m.opts
 	}
 
-	return nil, rv[1]
+	return nil, rv[1], m.opts
 }
