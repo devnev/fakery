@@ -59,8 +59,8 @@ func On_MultiBasicTypes_InTwoAnonOutNone[
 	},
 ](
 	m *Mock_MultiBasicTypes,
-	a0 func(string) string,
-	a1 func(int) string,
+	a0 func(int, string) string,
+	a1 func(int, int) string,
 	r R,
 	o ...fakery.Option,
 ) {
@@ -73,8 +73,8 @@ func On_MultiBasicTypes_InTwoAnonOutTwoAnon[
 	},
 ](
 	m *Mock_MultiBasicTypes,
-	a0 func(float32) string,
-	a1 func(int) string,
+	a0 func(int, float32) string,
+	a1 func(int, int) string,
 	r R,
 	o ...fakery.Option,
 ) {
@@ -87,8 +87,8 @@ func On_MultiBasicTypes_InTwoCombinedOutNone[
 	},
 ](
 	m *Mock_MultiBasicTypes,
-	a0 func(float32) string,
-	a1 func(float32) string,
+	a0 func(int, float32) string,
+	a1 func(int, float32) string,
 	r R,
 	o ...fakery.Option,
 ) {
@@ -101,8 +101,8 @@ func On_MultiBasicTypes_InTwoNamedOutNone[
 	},
 ](
 	m *Mock_MultiBasicTypes,
-	a0 func(int) string,
-	a1 func(string) string,
+	a0 func(int, int) string,
+	a1 func(int, string) string,
 	r R,
 	o ...fakery.Option,
 ) {

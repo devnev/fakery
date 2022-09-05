@@ -49,7 +49,7 @@ func On_CompoundTypes_InMapOutNone[
 	},
 ](
 	m *Mock_CompoundTypes,
-	a0 func(map[string]int) string,
+	a0 func(int, map[string]int) string,
 	r R,
 	o ...fakery.Option,
 ) {
@@ -86,7 +86,7 @@ func On_CompoundTypes_InPointerOutNone[
 	},
 ](
 	m *Mock_CompoundTypes,
-	a0 func(*int) string,
+	a0 func(int, *int) string,
 	r R,
 	o ...fakery.Option,
 ) {
@@ -99,7 +99,7 @@ func On_CompoundTypes_InSliceOutNone[
 	},
 ](
 	m *Mock_CompoundTypes,
-	a0 func([]string) string,
+	a0 func(int, []string) string,
 	r R,
 	o ...fakery.Option,
 ) {

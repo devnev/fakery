@@ -51,7 +51,7 @@ func On_SingleBasicTypes_InAnonOutNone[
 	},
 ](
 	m *Mock_SingleBasicTypes,
-	a0 func(int) string,
+	a0 func(int, int) string,
 	r R,
 	o ...fakery.Option,
 ) {
@@ -64,7 +64,7 @@ func On_SingleBasicTypes_InNamedOutAnon[
 	},
 ](
 	m *Mock_SingleBasicTypes,
-	a0 func(string) string,
+	a0 func(int, string) string,
 	r R,
 	o ...fakery.Option,
 ) {
@@ -77,7 +77,7 @@ func On_SingleBasicTypes_InNamedOutNamed[
 	},
 ](
 	m *Mock_SingleBasicTypes,
-	a0 func(int) string,
+	a0 func(int, int) string,
 	r R,
 	o ...fakery.Option,
 ) {
@@ -90,7 +90,7 @@ func On_SingleBasicTypes_InNamedOutNone[
 	},
 ](
 	m *Mock_SingleBasicTypes,
-	a0 func(int) string,
+	a0 func(int, int) string,
 	r R,
 	o ...fakery.Option,
 ) {

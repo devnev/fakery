@@ -26,7 +26,7 @@ func On_StructTypes_InAnonEmptyStruct[
 	},
 ](
 	m *Mock_StructTypes,
-	a0 func(struct{}) string,
+	a0 func(int, struct{}) string,
 	r R,
 	o ...fakery.Option,
 ) {
@@ -39,7 +39,7 @@ func On_StructTypes_InImportedStruct[
 	},
 ](
 	m *Mock_StructTypes,
-	a0 func(http.Server) string,
+	a0 func(int, http.Server) string,
 	r R,
 	o ...fakery.Option,
 ) {

@@ -20,4 +20,5 @@ type ToBeMocked interface {
 	Init(req Required, prefix string)
 	Get(name string) Returned
 	Add(in Input)
+	Print(s ...string)
 }

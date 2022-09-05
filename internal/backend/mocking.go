@@ -9,7 +9,6 @@ import (
 	"os"
 	"reflect"
 	"runtime"
-	"strconv"
 	"strings"
 	"sync"
 )
@@ -86,7 +85,7 @@ func Called(ms *MatchSet, m string, as []any) []any {
 		fmt.Fprintf(os.Stderr, "Matcher %d (%s:%d)\n", i+1, ms.methods[m][i].file, ms.methods[m][i].line)
 		for _, s := range ds {
 			if s != "" {
-				fmt.Fprint(os.Stderr, "\t"+strings.ReplaceAll(s, "\n", "\n\t\t")+"\n")
+				fmt.Fprint(os.Stderr, "\t"+strings.ReplaceAll(strings.TrimSpace(s), "\n", "\n\t")+"\n")
 			}
 		}
 	}
@@ -105,10 +104,7 @@ func check(m Matcher, ain []any, arv []reflect.Value) (ds []string, ret reflect.
 
 	var ne bool
 	for i := 0; i < len(arv); i++ {
-		d := m.args[i].Call([]reflect.Value{arv[i]})[0].Interface().(string)
-		if len(d) > 0 {
-			d = "Arg " + strconv.Itoa(i) + ":\n" + strings.TrimRight(d, "\n")
-		}
+		d := m.args[i].Call([]reflect.Value{reflect.ValueOf(i), arv[i]})[0].Interface().(string)
 		ds = append(ds, d)
 		ne = ne || d != ""
 	}

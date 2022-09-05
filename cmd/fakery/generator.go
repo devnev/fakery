@@ -87,7 +87,7 @@ func (g Generator) Gen(in iface) (string, string) {
 		}
 		g.print("m *Mock_", in.name, ",")
 		for i, pt := range m.paramTypes {
-			g.print("a", strconv.Itoa(i), " func(", pt, ") string,")
+			g.print("a", strconv.Itoa(i), " func(int, ", pt, ") string,")
 		}
 		if len(m.paramTypes) > 0 {
 			g.print("r R,")

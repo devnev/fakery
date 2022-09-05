@@ -26,8 +26,8 @@ func On_VariadicMethods_InOneAndVariadicOutNone[
 	},
 ](
 	m *Mock_VariadicMethods,
-	a0 func(int) string,
-	a1 func([]string) string,
+	a0 func(int, int) string,
+	a1 func(int, []string) string,
 	r R,
 	o ...fakery.Option,
 ) {
@@ -40,7 +40,7 @@ func On_VariadicMethods_InVariadicOutNone[
 	},
 ](
 	m *Mock_VariadicMethods,
-	a0 func([]int) string,
+	a0 func(int, []int) string,
 	r R,
 	o ...fakery.Option,
 ) {

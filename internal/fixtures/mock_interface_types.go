@@ -38,7 +38,7 @@ func On_InterfaceTypes_InAny[
 	},
 ](
 	m *Mock_InterfaceTypes,
-	a0 func(any) string,
+	a0 func(int, any) string,
 	r R,
 	o ...fakery.Option,
 ) {
@@ -51,7 +51,7 @@ func On_InterfaceTypes_InEmptyInterface[
 	},
 ](
 	m *Mock_InterfaceTypes,
-	a0 func(interface{}) string,
+	a0 func(int, interface{}) string,
 	r R,
 	o ...fakery.Option,
 ) {
@@ -64,7 +64,7 @@ func On_InterfaceTypes_InImported[
 	},
 ](
 	m *Mock_InterfaceTypes,
-	a0 func(sort.Interface) string,
+	a0 func(int, sort.Interface) string,
 	r R,
 	o ...fakery.Option,
 ) {

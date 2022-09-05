@@ -15,7 +15,7 @@ func Once() Option {
 	return option{
 		calledFn: func(a []any) string {
 			if seen {
-				return "Once():\nAlready called"
+				return "Once():\n\tAlready called"
 			}
 			return ""
 		},
@@ -31,7 +31,7 @@ func Times(n uint) Option {
 	return option{
 		calledFn: func(a []any) string {
 			if seen >= n {
-				return fmt.Sprintf("Times(%d):\nCalled %d times out of %d", n, seen, n)
+				return fmt.Sprintf("Times(%d):\n\tCalled %d times out of %d", n, seen, n)
 			}
 			return ""
 		},

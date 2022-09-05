@@ -123,12 +123,13 @@ Any of the above can be accomplished and extended with the parameters to the
 Argument matchers have the signature
 
 ```go
-func(ArgType) string
+func(int, ArgType) string
 ```
 
-A non-empty return value indicates that the argument does not match, with the
-reason as the string value. The mock is locked against further calls to any
-method while the argument matchers are run.
+The first argument is the argument index - mainly for use in failure messages -
+the second is argument value. A non-empty return value indicates that the
+argument does not match, with the reason as the string value. The mock is locked
+against further calls to any method while the argument matchers are run.
 
 #### Return handlers
 

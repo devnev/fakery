@@ -140,6 +140,39 @@ func TestFakeryWithReturnSequence(t *testing.T) {
 	}
 }
 
+func TestFakeryVariadicEquals(t *testing.T) {
+	m := &Mock_ToBeMocked{}
+	On_ToBeMocked_Print(m, fakery.VarArgs(fakery.Equal("hello"), fakery.Equal("goodbye")), fakery.ReturningNothing())
+	var i ToBeMocked = m
+
+	out := testutils.RecordStderr(t)
+	pv := testutils.CapturePanic(func() {
+		i.Print("oh no")
+	})
+	<-out.Stop()
+
+	const expectedPanic = "no match for call to Print"
+	if pv != expectedPanic {
+		t.Errorf("expected pv %q, got %#v", expectedPanic, pv)
+	}
+
+	deterministicOutput := strings.ReplaceAll(out.Out(), "\u00a0", " ")
+	expectdOutput := strings.Join([]string{
+		`Matcher 1 (` + testutils.FileLine(-16) + `)`,
+		"	Arg 0:",
+		"		  string(",
+		"		- \t\"hello\",",
+		"		+ \t\"oh no\",",
+		"		  )",
+		"	VarArgs:",
+		"		No argument for vararg matcher 1 (argument 1)",
+		"",
+	}, "\n")
+	if d := cmp.Diff(expectdOutput, deterministicOutput); d != "" {
+		t.Errorf("output differed: %s", d)
+	}
+}
+
 type returned string
 
 func (r returned) Hello() {
